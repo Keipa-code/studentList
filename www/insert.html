@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css"/>
+
+
+    <title>Hello, world!</title>
+  </head>
+  <div class="container-lg">
+  <body>
+<h1>
+<div class="mb-5">
+<div class="display-1">
+<p>Анкета абитуриента</p>
+</div>
+</div>
+</h1>
+<?php if (isset($message)) : ?>
+
+<div class="w-50 p-3">
+<div class="alert alert-success" role="alert" >
+    <?=$message;?>
+</div>
+</div>
+<?php endif; ?>
+
+
+
+
+<form class="row g-3" action="insert.php" method="post">
+
+
+    <div class="row mb-3">
+        <label for="inputName" class="col-sm-2 col-form-label">Имя</label>
+		<div class="col-sm-5">
+				<input type="text" class="form-control" pattern="[A-Za-zА-Яа-яЁё]{1,50}" value="<?=$page->data['firstName'];?>" id="inputName" name="firstName" title= "Имя должно содержать только буквы и состовлять не более 50-ти букв" required>
+				<div class="invalid-feedback">
+				Введите имя
+				</div>
+			</div>
+    </div>
+    <div class="row mb-3">
+        <label for="inputSurName" class="col-sm-2 col-form-label">Фамилия</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" pattern="[A-Za-zА-Яа-яЁё]{1,50}" value="<?=$page->data['surName'];?>" id="inputSurName" name="surName" title= "Фамилия должна содержать только буквы и состовлять не более 50-ти букв" required>
+        </div>
+    </div>
+    <fieldset class="row mb-3">
+        <div class="row">
+            <legend class="col-form-label col-sm-2 pt-0">Пол</legend>
+            <div class="col-sm-5">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="gridRadios1" value="Мужчина" <?=$page->radio['genderMan'];?> required>
+                    <label class="form-check-label" for="gridRadios1">
+                        Мужчина
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="gridRadios2" value="Женщина" <?=$page->radio['genderWoman'];?> required>
+                    <label class="form-check-label" for="gridRadios2">
+                        Женщина
+                    </label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <div class="row mb-3">
+        <label for="inputGroupNumber" class="col-sm-2 col-form-label">Номер группы</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" id="inputGroupNumber" value="<?=$page->data['groupNumber'];?>" name="groupNumber" pattern="[A-Za-zА-Яа-яЁё0-9]{1,10}" title= "Номер группы должен содержать только буквы, цифры и состовлять не более 10-ти знаков" required>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-5">
+            <input type="email" class="form-control" value="<?=$page->data['email'];?>" name="email" id="inputEmail" required>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="inputPoints" class="col-sm-2 col-form-label">Количество баллов</label>
+        <div class="col-sm-5">
+            <input type="number" class="form-control" value="<?=$page->data['points'];?>" id="inputPoints" name="points" pattern="[0-9]{1,3}" title= "Баллы могут содержать только цифры и быть не больше 1000" required>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="inputBirthDate" class="col-sm-2 col-form-label">Дата рождения</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" value="<?=$page->data['birthYear'];?>" id="inputBirthDate" name="birthYear" pattern="[0-9]{4}" title= "Введите корректные год рождения" required>
+        </div>
+    </div>
+    <fieldset class="row mb-3">
+        <div class="row">
+            <legend class="col-form-label col-sm-2 pt-0">Проживание</legend>
+            <div class="col-sm-5">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="location" id="gridLocation1" value="Местный" <?=$page->radio['locationCity'];?> required>
+                    <label class="form-check-label" for="gridLocation1">
+                        Местный
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="location" id="gridLocation2" value="Иногородний" <?=$page->radio['locationNonresident'];?> required>
+                    <label class="form-check-label" for="gridLocation2">
+                        Иногородний
+                    </label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <input type="hidden" name="token" value="<?= htmlspecialchars($token, ENT_QUOTES) ?>">
+    <input type="hidden" name="submittype" value="<?= htmlspecialchars($submitType, ENT_QUOTES) ?>">
+    <?php if ($submitType == 'Обновление') : ?>
+    <input type="hidden" name="id" value="<?= htmlspecialchars($page->cookie['id'], ENT_QUOTES) ?>">
+    <input type="hidden" name="passwd" value="<?= htmlspecialchars($page->cookie['passwd'], ENT_QUOTES) ?>">
+    <?php endif ; ?>
+
+    <div class="row mb-3">
+        <div class="col-sm-5">
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </div>
+    </div>
+</form>
+
+  </body>
+  </div>
+</html>
